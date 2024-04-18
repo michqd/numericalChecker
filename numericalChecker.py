@@ -32,13 +32,17 @@ alphabet = {'+', '-','_','.', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9','
 hex_alphabet = {'a', 'b', 'c', 'd', 'e', 'f', 'A', 'B', 'C', 'D', 'E', 'F'}
 octa_letters = {'o', 'O'}
 binaryNums = {'0', '1'}
+signsNums = {'+', '-'}
+float_alphabet = {'e', 'E'}
+empty_set = { }
+
 
 # ACCEPTS: 0123456789_
 # NFA for Decinteger
 N0 = NFA({0, 1, 2, 3, 4, 5, 6},
          alphabet,
 
-         {(0, digit): {1} for digit in digits - {'0'}} | 
+         {(0, '-'): {1}} | {(0, digit): {1} for digit in digits - {'0'}} | 
          {(1, digit): {1} for digit in digits} | {(1, '_'): {2}} |
          {(2, digit): {3, 1} for digit in digits} | 
          {(3, digit): {3, 1} for digit in digits} | {(0, '0'): {4}} | 
@@ -84,12 +88,21 @@ N2 = NFA({0, 1, 2, 3, 4},
 
 # ACCEPTS: +- (e | E) 0123456789._
 # NFA for float integer
-N3 = NFA({0, 1, 2, 3},
+N3 = NFA({0, 1, 2},
          alphabet,
+        
+         {(0, '-'): {1}, (0, '+'): {1}, (0, ''): {1}} |
+         {(1, digit): {1} for digit in digits} | {(1, '.'): {5}} | {(1, '_'): {6}} | {(1, digit): {2} for digit in digits} |
+         {(2, digit): {2, 1} for digit in digits} | {(2, alpha): {3} for alpha in float_alphabet} |
+         {(3, ''): {2}} | {(3, signs): {4} for signs in signsNums} |
+         {(4, ''): {2}} |
+         {(5, digit): {2} for digit in digits} | 
+         {(6, digit): {1, 2} for digit in digits} ,
+        
+         {0},
 
-         #CODE
+         {2, 5})
 
-        )
 
 if __name__ == "__main__":
     input_string = input("Please enter valid integer: ")
@@ -97,6 +110,7 @@ if __name__ == "__main__":
     decint = N0.run(input_string)
     hexint = N1.run(input_string)
     octint = N2.run(input_string)
+    floatint = N3.run(input_string)
 
     if decint:
         print("True. This is a valid decinteger.")
@@ -106,6 +120,9 @@ if __name__ == "__main__":
         
     elif octint:
         print("True. This is a valid octinteger.")
+
+    elif floatint:
+        print("True. This is a valid float integer.")
 
     else:
         print("False. This is not valid.")
