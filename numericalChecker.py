@@ -37,7 +37,7 @@ float_alphabet = {'e', 'E'}
 empty_set = { }
 
 
-# ACCEPTS: 0123456789_
+# ACCEPTS: - + 0123456789_
 # NFA for Decinteger
 N0 = NFA({0, 1, 2, 3, 4, 5, 6},
          alphabet,
@@ -63,13 +63,12 @@ N1 = NFA({0, 1, 2, 3, 4, 5},
          {(1, 'x'): {2}} | {(1, 'X'): {2}} |
          {(2, digit): {3} for digit in digits} | {(2, alpha): {3} for alpha in hex_alphabet} |
          {(3, digit): {3} for digit in digits} | {(3, alpha): {3} for alpha in hex_alphabet} |
-         {(3, '_'): {4}} |
-         {(4, digit): {5} for digit in digits} | {(4, alpha): {5} for alpha in hex_alphabet} |
-         {(5, digit): {5} for digit in digits} | {(5, alpha): {5} for alpha in hex_alphabet},
+         {(3, '_'): {4}} | 
+         {(4, digit): {3} for digit in digits} | {(4, alpha): {3} for alpha in hex_alphabet},
 
          {0},
 
-         {3, 5})
+         {3})
 
 # ACCEPTS: 0o | 0O (01234567_)
 # NFA for Octinteger
@@ -86,22 +85,25 @@ N2 = NFA({0, 1, 2, 3, 4},
 
          {4})
 
-# ACCEPTS: +- (e | E) 0123456789._
+# ACCEPTS: +- (0123456789._eE)
 # NFA for float integer
 N3 = NFA({0, 1, 2},
          alphabet,
         
-         {(0, '-'): {1}, (0, '+'): {1}, (0, ''): {1}} |
-         {(1, digit): {1} for digit in digits} | {(1, '.'): {5}} | {(1, '_'): {6}} | {(1, digit): {2} for digit in digits} |
-         {(2, digit): {2, 1} for digit in digits} | {(2, alpha): {3} for alpha in float_alphabet} |
-         {(3, ''): {2}} | {(3, signs): {4} for signs in signsNums} |
-         {(4, ''): {2}} |
-         {(5, digit): {2} for digit in digits} | 
-         {(6, digit): {1, 2} for digit in digits} ,
+         {(0, sign): {1} for sign in signsNums} | {(0, ''): {1}} |
+         {(1, digit): {1, 2} for digit in digits} | {(1, '.'): {6}} | {(1, '_'): {3}} |
+         {(2, digit): {2, 1} for digit in digits} | {(2, alpha): {4} for alpha in float_alphabet} |
+         {(3, digit): {1, 2} for digit in digits} | 
+         {(4, ''): {2}} | {(4, sign): {5} for sign in signsNums} |
+         {(5, ''): {2}} | 
+         {(6, digit): {6} for digit in digits} | {(6, alpha): {7} for alpha in float_alphabet} | {(6, '_'): {9}} |
+         {(7, ''): {6}} | {(7, sign): {8} for sign in signsNums} |
+         {(8, ''): {6}} |
+         {(9, digit): {6} for digit in digits},
         
          {0},
 
-         {2, 5})
+         {2, 6})
 
 
 if __name__ == "__main__":
