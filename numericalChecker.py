@@ -91,19 +91,23 @@ N3 = NFA({0, 1, 2},
          alphabet,
         
          {(0, sign): {1} for sign in signsNums} | {(0, ''): {1}} |
-         {(1, digit): {1, 2} for digit in digits} | {(1, '.'): {6}} | {(1, '_'): {3}} |
-         {(2, digit): {2, 1} for digit in digits} | {(2, alpha): {4} for alpha in float_alphabet} |
-         {(3, digit): {1, 2} for digit in digits} | 
-         {(4, ''): {2}} | {(4, sign): {5} for sign in signsNums} |
-         {(5, ''): {2}} | 
-         {(6, digit): {6} for digit in digits} | {(6, alpha): {7} for alpha in float_alphabet} | {(6, '_'): {9}} |
-         {(7, ''): {6}} | {(7, sign): {8} for sign in signsNums} |
-         {(8, ''): {6}} |
-         {(9, digit): {6} for digit in digits},
+         {(1, digit): {2} for digit in digits} | {(1, '.'): {13}} | 
+         {(2, digit): {2} for digit in digits} | {(2, alpha): {7} for alpha in float_alphabet} | {(2, '.'): {4}} | {(2, '_'): {3}}|
+         {(3, digit): {3} for digit in digits} | {(3, alpha): {7} for alpha in float_alphabet} | {(3, '.'): {5}} |
+         {(4, digit): {4} for digit in digits} | {(4, alpha): {7} for alpha in float_alphabet} | {(4, '_'): {5}} |
+         {(5, digit): {5} for digit in digits} | {(5, alpha): {7} for alpha in float_alphabet} | {(5, '_'): {6}}| 
+         {(6, digit): {6} for digit in digits} | {(6, alpha): {7} for alpha in float_alphabet} |
+         {(7, ''): {8}} | {(7, sign): {8} for sign in signsNums} |
+         {(8, digit): {10} for digit in digits} | {(8, '_'): {9}} |
+         {(9, digit): {10} for digit in digits} |
+         {(10, digit): {10} for digit in digits} | {(10, '_'): {11}} | 
+         {(11, digit): {10} for digit in digits} | 
+         {(12, digit): {10} for digit in digits} |
+         {(13, digit): {10} for digit in digits} | {(13, '_'): {12}},
         
          {0},
 
-         {2, 6})
+         {4, 5, 6, 10})
 
 
 if __name__ == "__main__":
